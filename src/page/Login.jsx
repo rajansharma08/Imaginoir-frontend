@@ -21,7 +21,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center h-[90vh]  bg-gray-100 overflow-hidden">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-sm text-center">
         <h2 className="text-2xl font-bold mb-6 text-gray-800">Sign in</h2>
         <button

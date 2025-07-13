@@ -1,9 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
-
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-
 import { toast } from "react-toastify";
 
 import { preview } from "../assets";
@@ -35,12 +33,9 @@ const CreatePost = () => {
     if (form.prompt) {
       try {
         setGeneratingImg(true);
-        const response = await axios.post(
-          `${baseURL}/api/v1/clipdrop`,
-          {
-            prompt: form.prompt,
-          }
-        );
+        const response = await axios.post(`${baseURL}/api/v1/clipdrop`, {
+          prompt: form.prompt,
+        });
 
         const { photo } = response.data;
         if (!photo) throw new Error("Photo not returned by API");
@@ -63,16 +58,13 @@ const CreatePost = () => {
     if (form.prompt && form.photo) {
       setLoading(true);
       try {
-        const response = await fetch(
-          `${baseURL}/api/v1/post`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ ...form }),
-          }
-        );
+        const response = await fetch(`${baseURL}/api/v1/post`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ ...form }),
+        });
 
         await response.json();
         toast.success("Success!");
@@ -95,7 +87,7 @@ const CreatePost = () => {
       transition={{ duration: 0.6 }}
     >
       <motion.section
-        className="w-full max-w-4xl mx-auto px-6 py-10"
+        className="w-full max-w-4xl mx-auto px-4 sm:px-6 py-10"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
@@ -106,10 +98,10 @@ const CreatePost = () => {
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2 }}
         >
-          <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-500">
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-500">
             Create
           </h1>
-          <p className="mt-2 text-gray-600 text-base max-w-lg">
+          <p className="mt-2 text-gray-600 text-sm sm:text-base max-w-lg">
             Generate an imaginative image using{" "}
             <span className="font-semibold text-purple-500">AI</span> and share
             it with the community.
@@ -118,13 +110,12 @@ const CreatePost = () => {
 
         {/* Form */}
         <motion.form
-          className=" mt-10 w-full bg-white/50 border border-white/30 shadow-2xl backdrop-blur-lg p-8 rounded-3xl"
+          className="mt-10 w-full bg-white/50 border border-white/30 shadow-2xl backdrop-blur-lg p-6 sm:p-8 rounded-3xl"
           onSubmit={handleSubmit}
           initial={{ scale: 0.95, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.5 }}
         >
-          {/* Input Fields */}
           <div className="flex flex-col gap-6">
             <FormField
               labelName="Your Name"
@@ -146,8 +137,8 @@ const CreatePost = () => {
               handleSurpriseMe={handleSurpriseMe}
             />
 
-            {/* Image Preview */}
-            <div className="relative bg-white/60 border border-gray-300 rounded-xl w-64 h-64 flex justify-center items-center shadow-inner mx-auto">
+            {/* Responsive Image Preview */}
+            <div className="relative w-full max-w-xs aspect-square bg-white/60 border border-gray-300 rounded-xl flex justify-center items-center shadow-inner mx-auto">
               {form.photo ? (
                 <img
                   src={form.photo}
@@ -179,7 +170,7 @@ const CreatePost = () => {
               onClick={generateImage}
               className="text-white bg-gradient-to-r from-green-500 to-emerald-600 font-semibold rounded-md text-sm px-6 py-2.5 shadow-md"
             >
-              {generatingImg ? "Generating..." : " Generate"}
+              {generatingImg ? "Generating..." : "Generate"}
             </motion.button>
           </div>
 
@@ -194,7 +185,7 @@ const CreatePost = () => {
               whileTap={{ scale: 0.95 }}
               className="text-white bg-gradient-to-r from-indigo-500 to-purple-600 font-semibold rounded-md text-sm px-6 py-2.5 shadow-md"
             >
-              {loading ? "Sharing..." : " Share with the Community"}
+              {loading ? "Sharing..." : "Share with the Community"}
             </motion.button>
           </div>
         </motion.form>
