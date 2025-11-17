@@ -21,9 +21,12 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-[90vh]  bg-gray-100 overflow-hidden">
+    <div className="flex items-center justify-center h-[90vh]  bg-[#f9fafe] overflow-hidden">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-sm text-center">
         <h2 className="text-2xl font-bold mb-6 text-gray-800">Sign in</h2>
+        <h4 className="text-md mb-4 text-gray-600">
+          Please sign in to generate post or click logo to navigate to home.
+        </h4>
         <button
           onClick={handleGoogleSignIn}
           className="flex items-center justify-center gap-3 border hover:bg-red-300 hover:border-none text-black font-semibold px-4 py-2 rounded-md w-full transition"

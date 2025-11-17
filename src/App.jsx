@@ -25,27 +25,20 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      {user && <Header />}
+      {<Header />}
 
       <main className="sm:p-8 px-4 py-8 w-full bg-[#f9fafe] min-h-[calc(100vh-73px)]">
         <Routes>
-          {/* 👇 Login Route: If logged in, redirect to /home */}
-          <Route
-            path="/"
-            element={user ? <Navigate to="/home" replace /> : <Login />}
-          />
+          {/* Default page → Home */}
+          <Route path="/" element={<Home user={user} />} />
 
-          {/* 👇 Protected Routes */}
-          <Route
-            path="/home"
-            element={user ? <Home /> : <Navigate to="/" replace />}
-          />
-          <Route
-            path="/create-post"
-            element={user ? <CreatePost /> : <Navigate to="/" replace />}
-          />
+          {/* Login page */}
+          <Route path="/login" element={<Login />} />
 
-          {/* 👇 Catch all undefined routes */}
+          {/* Create Post → public page but protected actions */}
+          <Route path="/create-post" element={<CreatePost user={user} />} />
+
+          {/* Catch everything → send to Home */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
+import { auth } from "../firebase/config"; 
 
 import { preview } from "../assets";
 import { getRandomPrompt } from "../utils";
@@ -29,7 +30,17 @@ const CreatePost = () => {
     setForm({ ...form, prompt: randomPrompt });
   };
 
+  // ===============================
+  // 🔐 PROTECT: Generate Image
+  // ===============================
   const generateImage = async () => {
+    const user = auth.currentUser;
+    if (!user) {
+      toast.error("Please login to generate an image!");
+      navigate("/login");
+      return;
+    }
+
     if (form.prompt) {
       try {
         setGeneratingImg(true);
@@ -48,12 +59,22 @@ const CreatePost = () => {
         setGeneratingImg(false);
       }
     } else {
-      toast.warn("Please provide all details.");
+      toast.warn("Please enter a prompt first");
     }
   };
 
+  // ===============================
+  // 🔐 PROTECT: Submit image
+  // ===============================
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const user = auth.currentUser;
+
+    if (!user) {
+      toast.error("Please login to share your image!");
+      navigate("/login");
+      return;
+    }
 
     if (form.prompt && form.photo) {
       setLoading(true);
@@ -67,7 +88,7 @@ const CreatePost = () => {
         });
 
         await response.json();
-        toast.success("Success!");
+        toast.success("Shared Successfully!");
         navigate("/home");
       } catch (err) {
         toast.error("Error: " + err.message);
@@ -75,7 +96,7 @@ const CreatePost = () => {
         setLoading(false);
       }
     } else {
-      toast.warn("Please generate an image with proper details");
+      toast.warn("Please generate an image first");
     }
   };
 
@@ -137,7 +158,7 @@ const CreatePost = () => {
               handleSurpriseMe={handleSurpriseMe}
             />
 
-            {/* Responsive Image Preview */}
+            {/* Image Preview */}
             <div className="relative w-full max-w-xs aspect-square bg-white/60 border border-gray-300 rounded-xl flex justify-center items-center shadow-inner mx-auto">
               {form.photo ? (
                 <img
@@ -174,7 +195,7 @@ const CreatePost = () => {
             </motion.button>
           </div>
 
-          {/* Share Section */}
+          {/* Share Button */}
           <div className="mt-10 text-center">
             <p className="text-gray-700 text-sm italic mb-2">
               ⭐ Once your image is ready, you can share it with the community.
