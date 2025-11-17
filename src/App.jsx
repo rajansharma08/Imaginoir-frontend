@@ -11,7 +11,7 @@ import { Home, CreatePost, Login } from "./page";
 
 const App = () => {
   const [user, setUser] = useState(null);
-  const [checkingAuth, setCheckingAuth] = useState(true);
+  const [checkingAuth, setCheckingAuth] = useState(true); // To show nothing while checking
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -29,15 +29,21 @@ const App = () => {
 
       <main className="sm:p-8 px-4 py-8 w-full bg-[#f9fafe] min-h-[calc(100vh-73px)]">
         <Routes>
-          {/* 👇 Login Route */}
+          {/* 👇 Login Route: If logged in, redirect to /home */}
           <Route
             path="/"
             element={user ? <Navigate to="/home" replace /> : <Login />}
           />
 
-          {/* 👇 Public Routes - All users can view */}
-          <Route path="/home" element={<Home />} />
-          <Route path="/create-post" element={<CreatePost user={user} />} />
+          {/* 👇 Protected Routes */}
+          <Route
+            path="/home"
+            element={user ? <Home /> : <Navigate to="/" replace />}
+          />
+          <Route
+            path="/create-post"
+            element={user ? <CreatePost /> : <Navigate to="/" replace />}
+          />
 
           {/* 👇 Catch all undefined routes */}
           <Route path="*" element={<Navigate to="/" replace />} />
